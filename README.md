@@ -151,7 +151,7 @@ You will need to download **Git** and **Node** to run this project.
 2. After forking, open your terminal and run the following commands to clone the repo:
 
   ```bash
-  git clone https://github.com/seraprogrammer/portfolio.git
+  git clone https://github.com/Jeanluc24/portfolio.git
   ```
 Navigate to the Project Directory 📂
 Once the repository is cloned, change your directory to the project folder:
@@ -189,5 +189,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-<div align="center"> Made with ❤️ by Nazmul Hossain </div>
+<div align="center"> Made with ❤️ by Jean Luc </div>
 
