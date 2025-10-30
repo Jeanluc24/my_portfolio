@@ -1,217 +1,295 @@
-import { ReactLenis } from "lenis/react";
-import { useTransform, motion, useScroll } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
 
 const projects = [
   {
-    title: "Olova! A Lightweight JavaScript Library",
+    title: "🚀 Medixr",
     description:
-      "A lightweight JavaScript library for creating beautiful, responsive UI components.",
-    src: "rock.jpg",
-    link: "https://i.postimg.cc/DwgWTfP0/Annotation-2025-03-19-113338.png",
-    color: "#5196fd",
-    githubLink: "https://github.com/olovajs/olova",
-    liveLink: "https://olova.js.org/",
-  },
-  {
-    title: "A sleek portfolio built with React and Tailwind CSS ",
-    description:
-      "A sleek portfolio built with React and Tailwind CSS to showcase your skills, projects, and experience in a modern design.",
-    src: "tree.jpg",
-    link: "https://i.postimg.cc/J75CKyrs/Annotation-2025-04-01-203959.png",
-    color: "#8f89ff",
-    githubLink: "https://github.com/seraprogrammer/portfolio",
-    liveLink: "https://codervai.vercel.app",
-  },
-  {
-    title: "🚀 CodeWhisperer",
-    description:
-      "🚀 CodeWhisperer A powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
+      "I worked on the frontend part of Medixr, a healthcare platform that connects patients with doctors for online consultations. It features a user-friendly interface, secure video calls, and appointment scheduling.",
     src: "water.jpg",
-    link: "https://i.postimg.cc/J4jPVFY0/Annotation-2025-04-01-204723.png",
+    link: "https://i.postimg.cc/hPzXFRRt/Screenshot-2025-06-26-161929.png",
     color: "#fff",
-    githubLink: "https://github.com/seraprogrammer/codewhisperer",
-    liveLink: "https://codewhisperer.vercel.app/",
+    githubLink: "#",
+    liveLink: "https://medixr.org/",
   },
   {
-    title: "CodeKori 🔥",
+    title: "Volunteerfit!🌍",
     description:
-      "CodeKori is a powerful online code editor built with React and Tailwind CSS. Featuring real-time code execution, syntax highlighting, multi-language support, and a sleek UI. Start coding instantly! 💻✨",
+      "Volunteerfit! An app designed to connect volunteers with local organizations, allowing users to find and join volunteer opportunities in their area, track their volunteer hours, and make a positive impact in their communities.",
+    src: "rock.jpg",
+    link: "https://i.postimg.cc/YC0bB9qm/Screenshot-2025-06-26-160813.png",
+    color: "#5196fd",
+    githubLink: "https://github.com/BaRemy/volunteerfit",
+    liveLink: "https://baremy.github.io/volunteerfit/",
+  },
+  {
+    title: "My Portfolio" + " 🌟 ",
+    description:
+      "A personal portfolio website showcasing my skills, projects, and experiences. Built with React, Tailwind CSS, and Framer Motion for smooth animations. Explore my work and connect with me!",
+    src: "tree.jpg",
+    link: "https://i.postimg.cc/zGsVjtyP/Screenshot-2025-06-26-154129.png",
+    color: "#8f89ff",
+    githubLink: "#",
+    liveLink: "https://mugabe-robert.vercel.app/",
+  },
+  {
+    title: "Fastfood 🍔",
+    description:
+      "Fastfood is a modern food delivery app that allows users to order their favorite meals from local restaurants. It features a sleek design, real-time order tracking, and secure payment options.",
     src: "house.jpg",
-    link: "https://i.postimg.cc/cHQr4fpR/Annotation-2025-04-01-205350.png",
-    color: "#ed649e",
-    githubLink: "https://github.com/seraprogrammer/CodeKori",
-    liveLink: "https://codekori.js.org",
+    link: "https://i.postimg.cc/RFdMtXr8/Screenshot-2025-06-26-154704.png",
+    color: "white",
+    githubLink: "https://github.com/mugabe-rob/FUTURE_FS_02",
+    liveLink: "https://frontend-self-nine-87.vercel.app/",
   },
 ];
 
 export default function Projects() {
-  const container = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ["start start", "end end"],
-  });
+  const [currentProject, setCurrentProject] = useState(0);
 
-  useEffect(() => {
-    // Add specific styles for 1366x768 resolution
-    const style = document.createElement("style");
-    style.textContent = `
-      @media screen and (width: 1366px) and (height: 768px),
-             screen and (width: 1367px) and (height: 768px),
-             screen and (width: 1368px) and (height: 769px) {
-        .project-card {
-          scale: 0.85;
-          margin-top: -5vh;
-        }
-        .project-container {
-          height: 90vh;
-        }
-      }
-    `;
-    document.head.appendChild(style);
+  const nextProject = () => {
+    setCurrentProject((prev) => (prev + 1) % projects.length);
+  };
 
-    // Resolution check function
-    const checkResolution = () => {
-      const isTargetResolution =
-        window.innerWidth >= 1360 &&
-        window.innerWidth <= 1370 &&
-        window.innerHeight >= 760 &&
-        window.innerHeight <= 775;
+  const prevProject = () => {
+    setCurrentProject((prev) => (prev - 1 + projects.length) % projects.length);
+  };
 
-      if (isTargetResolution) {
-        document.documentElement.style.setProperty("--project-scale", "0.85");
-        document.documentElement.style.setProperty("--project-margin", "-5vh");
-      } else {
-        document.documentElement.style.setProperty("--project-scale", "1");
-        document.documentElement.style.setProperty("--project-margin", "0");
-      }
-    };
-
-    checkResolution();
-    window.addEventListener("resize", checkResolution);
-
-    return () => {
-      document.head.removeChild(style);
-      window.removeEventListener("resize", checkResolution);
-    };
-  }, []);
+  const goToProject = (index) => {
+    setCurrentProject(index);
+  };
 
   return (
-    <ReactLenis root>
-      <main className="bg-black" ref={container}>
-        <section className="text-white w-full bg-slate-950">
-          {projects.map((project, i) => {
-            const targetScale = 1 - (projects.length - i) * 0.05;
-            return (
+    <main className="bg-black min-h-screen">
+      <section className="text-white w-full bg-slate-950 min-h-screen flex flex-col">
+        {/* Project Display Area */}
+        <div className="flex-1 flex items-center justify-center py-8">
+          <div className="w-[90%] md:w-[85%] lg:w-[75%] xl:w-[65%] relative">
+            <AnimatePresence mode="wait">
               <Card
-                key={`p_${i}`}
-                i={i}
-                url={project.link}
-                title={project.title}
-                color={project.color}
-                description={project.description}
-                progress={scrollYProgress}
-                range={[i * 0.25, 1]}
-                targetScale={targetScale}
-                githubLink={project.githubLink}
-                liveLink={project.liveLink}
+                key={currentProject}
+                project={projects[currentProject]}
+                projectIndex={currentProject}
               />
-            );
-          })}
-        </section>
-      </main>
-    </ReactLenis>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Navigation Controls */}
+        <div className="pb-4 md:pb-8">
+          {/* Navigation Buttons */}
+          <div className="flex justify-center items-center gap-3 md:gap-8 px-4">
+            {/* Previous Button */}
+            <motion.button
+              onClick={prevProject}
+              className="group relative flex items-center gap-2 md:gap-3 px-4 py-2 md:px-8 md:py-4 bg-gradient-to-r from-black to-blue-600 rounded-full overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-white-500/25"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={projects.length <= 1}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-700 to-blue-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              <motion.div
+                className="relative z-10 flex items-center gap-2 md:gap-3"
+                whileHover={{ x: -3 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  className="md:w-5 md:h-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                <span className="text-white font-semibold text-sm md:text-lg">Prev</span>
+              </motion.div>
+              
+              {/* Ripple effect */}
+              <div className="absolute inset-0 bg-white opacity-0 group-active:opacity-20 rounded-full transition-opacity duration-150" />
+            </motion.button>
+
+            {/* Project Counter */}
+            <div className="flex flex-col items-center gap-1 md:gap-2 px-3 md:px-6">
+              <div className="text-gray-400 text-xs md:text-sm font-medium">Project</div>
+              <div className="text-white text-lg md:text-xl font-bold">
+                {currentProject + 1} / {projects.length}
+              </div>
+            </div>
+
+            {/* Next Button */}
+            <motion.button
+              onClick={nextProject}
+              className="group relative flex items-center gap-2 md:gap-3 px-4 py-2 md:px-8 md:py-4 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/25"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              disabled={projects.length <= 1}
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-700 to-teal-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
+              <motion.div
+                className="relative z-10 flex items-center gap-2 md:gap-3"
+                whileHover={{ x: 3 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
+                <span className="text-white font-semibold text-sm md:text-lg">Next</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  className="md:w-5 md:h-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </motion.div>
+              
+              {/* Ripple effect */}
+              <div className="absolute inset-0 bg-white opacity-0 group-active:opacity-20 rounded-full transition-opacity duration-150" />
+            </motion.button>
+          </div>
+
+          {/* Mobile Dot Indicators (optional alternative navigation) */}
+          <div className="flex justify-center items-center gap-2 mt-4 md:hidden">
+            {projects.map((_, index) => (
+              <motion.button
+                key={index}
+                onClick={() => goToProject(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentProject 
+                    ? 'bg-white scale-125' 
+                    : 'bg-gray-600 hover:bg-gray-400'
+                }`}
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }
 
-function Card({
-  i,
-  title,
-  description,
-  url,
-  color,
-  progress,
-  range,
-  targetScale,
-  githubLink,
-  liveLink,
-}) {
-  const container = useRef(null);
-  const scale = useTransform(progress, range, [1, targetScale]);
-
+function Card({ project, projectIndex }) {
   return (
-    <div
-      ref={container}
-      className="h-screen flex items-center justify-center sticky top-0 project-container"
+    <motion.div
+      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -50, scale: 0.9 }}
+      transition={{ 
+        duration: 0.5, 
+        ease: [0.4, 0, 0.2, 1],
+        scale: { duration: 0.3 }
+      }}
+      className="w-full"
     >
       <motion.div
-        style={{
-          scale,
-          top: `calc(-5vh + ${i * 25}px)`,
-          transform: `scale(var(--project-scale, 1))`,
-          marginTop: "var(--project-margin, 0)",
-        }}
-        className="relative -top-[25%] h-auto w-[90%] md:w-[85%] lg:w-[75%] xl:w-[65%] origin-top project-card"
+        className="w-full bg-zinc-900 rounded-2xl overflow-hidden shadow-xl"
         whileHover={{
           y: -8,
           transition: { duration: 0.3 },
         }}
       >
         {/* Modern split card design */}
-        <div className="w-full flex flex-col md:flex-row bg-zinc-900 rounded-2xl overflow-hidden shadow-xl">
+        <div className="w-full flex flex-col md:flex-row">
           {/* Image section - full width on mobile, 55% on desktop */}
           <div className="w-full md:w-[55%] h-[250px] md:h-[400px] lg:h-[450px] relative overflow-hidden">
             <motion.img
-              src={url}
-              alt={title}
+              src={project.link}
+              alt={project.title}
               className="w-full h-full object-cover"
-              initial={{ scale: 1 }}
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.6 }}
               whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.4 }}
             />
 
             {/* Colored overlay on hover */}
             <motion.div
               className="absolute inset-0"
-              style={{ backgroundColor: color, mixBlendMode: "overlay" }}
+              style={{ backgroundColor: project.color, mixBlendMode: "overlay" }}
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 0.3 }}
               transition={{ duration: 0.3 }}
             />
 
             {/* Project number */}
-            <div className="absolute top-4 left-4 md:top-6 md:left-6 bg-black/50 backdrop-blur-md text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium">
-              Project {i + 1}
-            </div>
+            <motion.div
+              className="absolute top-4 left-4 md:top-6 md:left-6 bg-black/50 backdrop-blur-md text-white px-3 py-1 md:px-4 md:py-2 rounded-full text-xs md:text-sm font-medium"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
+            >
+              Project {projectIndex + 1}
+            </motion.div>
           </div>
 
           {/* Content section - full width on mobile, 45% on desktop */}
           <div className="w-full md:w-[45%] p-6 md:p-8 lg:p-10 flex flex-col justify-between">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+            >
               <div className="flex items-center gap-3 mb-4 md:mb-6">
-                <div
+                <motion.div
                   className="w-2 h-2 md:w-3 md:h-3 rounded-full"
-                  style={{ backgroundColor: color }}
+                  style={{ backgroundColor: project.color }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.3, type: "spring", stiffness: 400 }}
                 />
-                <div className="h-[1px] w-12 md:w-20 bg-gray-600" />
+                <motion.div 
+                  className="h-[1px] bg-gray-600"
+                  initial={{ width: 0 }}
+                  animate={{ width: "3rem" }}
+                  transition={{ delay: 0.4, duration: 0.5 }}
+                />
               </div>
 
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2 md:mb-4">
-                {title}
-              </h2>
-              <p className="text-sm md:text-base text-gray-400 leading-relaxed line-clamp-3 md:line-clamp-none max-w-md">
-                {description}
-              </p>
-            </div>
+              <motion.h2 
+                className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2 md:mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                {project.title}
+              </motion.h2>
+              <motion.p 
+                className="text-sm md:text-base text-gray-400 leading-relaxed line-clamp-3 md:line-clamp-none max-w-md"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
+                {project.description}
+              </motion.p>
+            </motion.div>
 
-            <div className="mt-4 md:mt-auto pt-4">
+            <motion.div 
+              className="mt-4 md:mt-auto pt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
               <div className="w-full h-[1px] bg-gray-800 mb-4 md:mb-6" />
 
               <div className="flex items-center gap-4">
                 {/* GitHub Link */}
                 <motion.a
-                  href={githubLink}
+                  href={project.githubLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center gap-2"
@@ -224,7 +302,7 @@ function Card({
                     height="22"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke={color}
+                    stroke={project.color}
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -233,7 +311,7 @@ function Card({
                   </svg>
                   <span
                     className="text-xs md:text-sm font-medium"
-                    style={{ color }}
+                    style={{ color: project.color }}
                   >
                     Code
                   </span>
@@ -241,7 +319,7 @@ function Card({
 
                 {/* Live Link */}
                 <motion.a
-                  href={liveLink}
+                  href={project.liveLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group flex items-center gap-2"
@@ -254,7 +332,7 @@ function Card({
                     height="22"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke={color}
+                    stroke={project.color}
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -265,30 +343,29 @@ function Card({
                   </svg>
                   <span
                     className="text-xs md:text-sm font-medium"
-                    style={{ color }}
+                    style={{ color: project.color }}
                   >
                     Live
                   </span>
                 </motion.a>
-              </div>
-            </div>
+                </div>
+            </motion.div>
           </div>
         </div>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
 // Add PropTypes validation
 Card.propTypes = {
-  i: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  progress: PropTypes.object.isRequired,
-  range: PropTypes.array.isRequired,
-  targetScale: PropTypes.number.isRequired,
-  githubLink: PropTypes.string.isRequired,
-  liveLink: PropTypes.string.isRequired,
+  project: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    link: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+    githubLink: PropTypes.string.isRequired,
+    liveLink: PropTypes.string.isRequired,
+  }).isRequired,
+  projectIndex: PropTypes.number.isRequired,
 };
